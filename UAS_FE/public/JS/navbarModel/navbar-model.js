@@ -15,7 +15,7 @@ angular.module('myApp', [])
                                     <a class="nav-link nav-text-size" aria-current="page" href="#" draggable="false" title="Homepage">Home Page</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link nav-text-size" href="#" draggable="false" title="Aboutpage">About Page</a>
+                                    <a class="nav-link nav-text-size" href="/home" draggable="false" title="Aboutpage">About Page</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link nav-text-size" href="#" draggable="false" title="Cartpage">Cart Page</a>
