@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AngularJS with Laravel API</title>
+
+    <!-- Include AngularJS Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script>
+        var app = angular.module('myApp', []);
+
+        app.controller('TestController', function($scope, $http) {
+            $http.get('http://127.0.0.1:8000/test')
+                .then(function(response) {
+                    $scope.message = response.data.message;
+                }, function(error) {
+                    $scope.message = "Error!!"
+                });
+        });
+    </script>
+</head>
+<body ng-controller="TestController">
+    <h1>Test API Laravel</h1>
+    
+    <!-- Menampilkan data API -->
+    <div>
+        <p>{{ message }}</p>
+    </div>
+</body>
+</html>
