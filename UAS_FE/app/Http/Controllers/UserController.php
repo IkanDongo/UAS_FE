@@ -15,17 +15,19 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        if (auth()->attempt($credentials)) {
-            $user = auth()->user();
-            $token = $user->createToken('UserToken')->plainTextToken;
-            return response()->json(['token' => $token]);
+    
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            
+            return response()->json([
+                'message' => 'Login berhasil',
+                'user' => $user
+            ]);
         }
-
-        return response()->json(['message' => 'Login gagal! Cek email dan password.'], 401);
+    
+        return response()->json(['message' => 'Email atau password salah'], 401);
     }
-
-    
-    
+ 
     public function index()
     {
         // $users = User::all(['name']);
