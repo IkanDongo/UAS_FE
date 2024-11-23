@@ -3,30 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AngularJS with Laravel API</title>
+    <title>Login</title>
 
     <!-- Include AngularJS Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="LoginController">
+    <h1>Login</h1>
+
+    <form ng-submit="login()">
+        <label>Email:</label>
+        <input type="email" ng-model="user.email" required />
+        
+        <label>Password:</label>
+        <input type="password" ng-model="user.password" required />
+
+        <button type="submit">Login</button>
+    </form>
+
+    <div ng-if="message">
+        <p>{{ message }}</p>
+    </div>
 
     <script>
         var app = angular.module('myApp', []);
 
-        app.controller('TestController', function($scope, $http) {
-            $http.get('http://127.0.0.1:8000/test')
-                .then(function(response) {
-                    $scope.message = response.data.message;
-                }, function(error) {
-                    $scope.message = "Error!!"
-                });
+        app.controller('LoginController', function($scope, $http) {
+            // Fungsi login
+            $scope.login = function() {
+                var userData = {
+                    email: $scope.user.email,
+                    password: $scope.user.password
+                };
+
+                $http.post('http://127.0.0.1:8000/login', userData)
+                    .then(function(response) {
+                        $scope.message = response.data.message;
+                        // Anda bisa menyimpan data pengguna atau token di sini untuk sesi pengguna
+                    }, function(error) {
+                        $scope.message = error.data.message || 'Login failed!';
+                    });
+            };
         });
     </script>
-</head>
-<body ng-controller="TestController">
-    <h1>Test API Laravel</h1>
-    
-    <!-- Menampilkan data API -->
-    <div>
-        <p>{{ message }}</p>
-    </div>
 </body>
 </html>
+

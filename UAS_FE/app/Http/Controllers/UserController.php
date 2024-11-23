@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -9,9 +10,26 @@ use Validator;
 
 class UserController extends Controller
 {
+ // UserController.php
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        if (auth()->attempt($credentials)) {
+            $user = auth()->user();
+            $token = $user->createToken('UserToken')->plainTextToken;
+            return response()->json(['token' => $token]);
+        }
+
+        return response()->json(['message' => 'Login gagal! Cek email dan password.'], 401);
+    }
+
+    
+    
     public function index()
     {
-        $users = User::all();
+        // $users = User::all(['name']);
+        $users = User::select('name', 'email')->get();
         
         return response()->json($users);
     }
