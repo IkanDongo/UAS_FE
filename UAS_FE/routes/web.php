@@ -10,13 +10,15 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::post('/login', [UserController::class, 'index']);
+Route::post('/login', [UserController::class, 'login']);
 Route::get('/login', function () {
     return response()->make(file_get_contents('C:\Kuliah\SEMS3\FRONTEND\UAS\UAS_FE\UAS_FE_ANGULARJS\index.html'));
 });
 
 
-Route::get('/users', [UserController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
+});
 Route::post('/products/{productId}/ratings', [ProductController::class, 'addRating']);
 Route::get('/products/{productId}/ratings', [ProductController::class, 'getRatings']);
 Route::delete('products/{productId}/rating/{ratingId}', [ProductController::class, 'destroyRating']);

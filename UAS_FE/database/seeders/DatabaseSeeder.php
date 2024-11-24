@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'Admin@example.com',
             'password' => Hash::make('Admin123!'),
             'is_admin' => true, // Set as admin
-            'email_verified_at' => now(),
+            'email_verified_at' => now()->toDateTimeString(),
             'remember_token' => Str::random(10),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => now()->toDateTimeString(),
+            'updated_at' => now()->toDateTimeString(),
         ]);
 
         // Menambahkan pengguna biasa
@@ -33,10 +33,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'User@example.com',
             'password' => Hash::make('User123!'),
             'is_admin' => false, 
-            'email_verified_at' => now(),
+            'email_verified_at' => now()->toDateTimeString(),
             'remember_token' => Str::random(10),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => now()->toDateTimeString(),
+            'updated_at' => now()->toDateTimeString(),
         ]);
     }
 }
