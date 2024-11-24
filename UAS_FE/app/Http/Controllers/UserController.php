@@ -7,27 +7,39 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Validator;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
  // UserController.php
 
-    public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-    
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            
-            return response()->json([
-                'message' => 'Login berhasil',
-                'user' => $user
-            ]);
-        }
-    
-        return response()->json(['message' => 'Email atau password salah'], 401);
+public function login(Request $request)
+{
+    $credentials = $request->only('email', 'password');
+
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+
+        // Hapus semua token lama
+        $user->tokens = [];
+        $user->save(); // Pastikan untuk menyimpan perubahan ini
+
+        // Buat token baru
+        $token = Str::random(60);
+        $user->push('tokens', $token); // Tambahkan token baru ke array
+
+        return response()->json([
+            'message' => 'Login berhasil',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user
+        ]);
     }
- 
+
+    return response()->json(['message' => 'Email atau password salah'], 401);
+}
+
+
     public function index()
     {
         // $users = User::all(['name']);
