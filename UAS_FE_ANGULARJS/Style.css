@@ -1,0 +1,18 @@
+.card-bg {
+    background-color: #93939346;
+    width: 500px;
+}
+
+.linear-darkwhite {
+    background: linear-gradient(to right top, #000, #839788);
+}
+
+.shadow, input:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 5px #f5f5f5 !important;
+    transition: 0.3s ease-in-out;
+}
+
+input {
+    transition: 0.3s ease-in-out;
+}
