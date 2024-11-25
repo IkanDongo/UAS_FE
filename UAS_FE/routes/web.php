@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use Illuminate\Http\Request;
@@ -19,6 +20,11 @@ Route::get('/login', function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
 });
+
+Route::middleware(['auth:sanctum', IsAdmin::class])->get('/admin/dashboard', function () {
+    return response()->json(['message' => 'Welcome to Admin Dashboard']);
+});
+
 Route::post('/products/{productId}/ratings', [ProductController::class, 'addRating']);
 Route::get('/products/{productId}/ratings', [ProductController::class, 'getRatings']);
 Route::delete('products/{productId}/rating/{ratingId}', [ProductController::class, 'destroyRating']);

@@ -20,13 +20,12 @@ public function login(Request $request)
     if (Auth::attempt($credentials)) {
         $user = Auth::user();
 
-        // Hapus semua token lama
         $user->tokens = [];
-        $user->save(); // Pastikan untuk menyimpan perubahan ini
+        $user->save(); 
 
         // Buat token baru
         $token = Str::random(60);
-        $user->push('tokens', $token); // Tambahkan token baru ke array
+        $user->push('tokens', $token);
 
         return response()->json([
             'message' => 'Login berhasil',
