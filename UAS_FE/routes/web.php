@@ -16,14 +16,7 @@ Route::get('/login', function () {
     return response()->make(file_get_contents('C:\Kuliah\SEMS3\FRONTEND\UAS\UAS_FE\UAS_FE_ANGULARJS\index.html'));
 });
 
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/users', [UserController::class, 'index']);
-});
-
-Route::middleware(['auth:sanctum', IsAdmin::class])->get('/admin/dashboard', function () {
-    return response()->json(['message' => 'Welcome to Admin Dashboard']);
-});
+Route::get('/users', [UserController::class, 'index']);
 
 Route::post('/products/{productId}/ratings', [ProductController::class, 'addRating']);
 Route::get('/products/{productId}/ratings', [ProductController::class, 'getRatings']);
@@ -36,3 +29,9 @@ Route::put('/products/{id}', [ProductController::class, 'update']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
 Route::get('/test', [App\Http\Controllers\Api\TestController::class, 'index']);
+
+Route::middleware([IsAdmin::class])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    });
+});
