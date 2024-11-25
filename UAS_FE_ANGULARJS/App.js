@@ -2,10 +2,11 @@
 var app = angular.module('myApp', ['ngRoute']);  
 
 app.service('AuthService', function() {
-    var user = null;
+    var user = JSON.parse(localStorage.getItem('user')) || null;
 
     this.setUser = function(userData) {
         user = userData;
+        localStorage.setItem('user', JSON.stringify(user));
     };
 
     this.getUser = function() {
@@ -15,7 +16,13 @@ app.service('AuthService', function() {
     this.isAdmin = function() {
         return user && user.is_admin;
     };
+
+    this.logout = function() {
+        user = null;
+        localStorage.removeItem('user');
+    };
 });
+
 
 app.config(function($routeProvider, $locationProvider) {
     $routeProvider
