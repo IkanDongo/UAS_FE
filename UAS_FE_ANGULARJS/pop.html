@@ -9,17 +9,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
     <script>
-        var app = angular.module('myApp', ['ngRoute']);  // Add 'ngRoute' dependency
+        var app = angular.module('myApp', ['ngRoute']); 
 
         app.config(function($routeProvider) {
-            // Define routes
             $routeProvider
-                .when('/', {  // Default route for the login page
-                    templateUrl: '#login', // Inline template for the login page
+                .when('/', {
+                    templateUrl: '#login', 
                     controller: 'LoginController'
                 })
                 .when('/home', {
-                    templateUrl: '#home', // Inline template for the home page
+                    templateUrl: '#home', 
                     controller: 'HomeController'
                 })
                 .otherwise({
@@ -28,7 +27,6 @@
         });
 
         app.controller('MainController', function($scope) {
-            // Main controller logic (if needed)
         });
 
         app.controller('LoginController', function($scope, $http, $location) {
@@ -66,10 +64,8 @@
 </head>
 <body ng-app="myApp" ng-controller="MainController" class="linear-darkwhite">
 
-    <!-- View will be injected here based on the route -->
     <div ng-view></div>
 
-    <!-- Inline templates for the views -->
     <script type="text/ng-template" id="login">
         <div class="container">
             <h2>Login</h2>
