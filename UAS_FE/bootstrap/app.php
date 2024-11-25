@@ -15,8 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\CorsMiddleware::class, 
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\IsAdmin::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,   
         ]);
         $middleware->validateCsrfTokens(except: [
             'login',
