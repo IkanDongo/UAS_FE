@@ -1,6 +1,23 @@
+
 var app = angular.module('myApp', ['ngRoute']);  
 
-app.config(function($routeProvider, $httpProvider) {
+app.service('AuthService', function() {
+    var user = null;
+
+    this.setUser = function(userData) {
+        user = userData;
+    };
+
+    this.getUser = function() {
+        return user;
+    };
+
+    this.isAdmin = function() {
+        return user && user.is_admin;
+    };
+});
+
+app.config(function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', { 
             templateUrl: 'MODEL/login.html',
@@ -13,33 +30,20 @@ app.config(function($routeProvider, $httpProvider) {
         .when('/admin/dashboard', {
             templateUrl: 'MODEL/admin_dashboard.html',
             controller: 'AdminDashboardController',
+            resolve: {
+                auth: function(AuthService, $location) {
+                    if (!AuthService.isAdmin()) {
+                        $location.path('/home');
+                    }
+                }
+            }
         })
         .otherwise({
             redirectTo: '/'
         });
-
-    $httpProvider.interceptors.push('AuthInterceptor');
 });
 
-app.factory('AuthInterceptor', function($q) {
-    return {
-        request: function(config) {
-            var token = localStorage.getItem('token');
-            if (token) {
-                config.headers['Authorization'] = 'Bearer ' + token;
-            }
-            return config;
-        },
-        responseError: function(response) {
-            if (response.status === 401) {
-                window.location.href = '/login';
-            }
-            return $q.reject(response);
-        }
-    };
-});
-
-app.controller('LoginController', function($scope, $http, $location) {
+app.controller('LoginController', function($scope, $http, $location, AuthService) {
     $scope.email = '';
     $scope.password = '';
     $scope.errorMessage = '';
@@ -55,11 +59,16 @@ app.controller('LoginController', function($scope, $http, $location) {
             password: $scope.password
         }).then(function(response) {
             console.log('Login successful:', response.data);
-            localStorage.setItem('token', response.data.token); 
             $scope.errorMessage = ''; 
-            alert('Login successful! Token saved.');
 
-            $location.path('/home');
+            AuthService.setUser(response.data.user);
+            
+            if (response.data.user.is_admin) {
+                $location.path('/admin/dashboard');
+            } else {
+                $location.path('/home');
+            }
+
         }, function(error) {
             console.error('Login failed:', error);
             $scope.errorMessage = error.data.message || 'Login failed, please try again.';
@@ -71,7 +80,12 @@ app.controller('HomeController', function($scope) {
     $scope.message = "Welcome to the Home page!";
 });
 
-app.controller('AdminDashboardController', function($scope, $http) {
+app.controller('AdminDashboardController', function($scope, $http, $location, AuthService) {
+    if (!AuthService.isAdmin()) {
+        $location.path('/home');
+        return;
+    }
+
     $scope.dashboardMessage = "Welcome to the Admin Dashboard!";
     $http.get('http://localhost:8000/admin/dashboard').then(function(response) {
         $scope.dashboardMessage = response.data.message || $scope.dashboardMessage;
