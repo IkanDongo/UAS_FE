@@ -1,3 +1,7 @@
+body {
+    /* overflow-x: hidden; */
+}
+
 .card-bg {
     background-color: rgba(147, 147, 147, 0.27);
     width: 500px;  /* Set width to 300px */
@@ -286,14 +290,32 @@ i.icon-size {
     }
 }
 
-.weather-info i {
-    margin-bottom: 10px;
+.sidebar {
+    height: 100vh;
+    min-width: 300px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    
+    background: linear-gradient(to bottom, #343a40, #252f3a);
+    color: white;
+    padding-top: 20px;
 }
-.weather-info h3 {
-    font-size: 1.5rem;
-    font-weight: bold;
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
 }
-.weather-info p {
-    font-size: 1.1rem;
-    margin-top: 5px;
+
+.sidebar a:hover {
+    background-color: #575d63;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.content {
+    margin-left: 260px;
+    padding: 20px;
 }
