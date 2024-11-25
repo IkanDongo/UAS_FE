@@ -1,16 +1,16 @@
 var app = angular.module('myApp', ['ngRoute']);  // Add 'ngRoute' dependency
 
-
+console.log("App module initialized"); // Debug message
 
 app.config(function($routeProvider) {
     // Define routes
     $routeProvider
-        .when('/', {  // Default route for the login page
+        .when('/', { 
             templateUrl: 'MODEL/login.html',
-            controller: 'LoginController'
+            controller: 'LoginController',
         })
         .when('/home', {
-            templateUrl: 'producthome.html',
+            templateUrl: 'MODEL/home.html',
             controller: 'HomeController'
         })
         .otherwise({

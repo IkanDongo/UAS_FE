@@ -1,19 +1,79 @@
 <div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="card shadow card-bg rounded">
+    <div class="card custom-shadow card-bg rounded">
         <div class="card-body">
-            <h2 class="card-title text-center my-4 display-6 text-white">Login</h2>
-            <form>
-                <div class="mb-3">
-                    <label for="email" class="form-label text-white">Email</label>
-                    <input type="email" id="email" class="form-control" ng-model="email" placeholder="Enter your email" required />
+            <!-- Tab navigation for Sign In / Sign Up -->
+            <ul class="nav nav-tabs justify-content-center" id="authTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active text-dark" id="sign-in-tab" data-bs-toggle="tab" href="#sign-in" role="tab" aria-controls="sign-in" aria-selected="true">Sign In</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link text-dark" id="sign-up-tab" data-bs-toggle="tab" href="#sign-up" role="tab" aria-controls="sign-up" aria-selected="false">Sign Up</a>
+                </li>
+            </ul>
+
+            <div class="tab-content mt-4" id="authTabsContent">
+                <div class="tab-pane fade show active" id="sign-in" role="tabpanel" aria-labelledby="sign-in-tab">
+                    <h2 class="card-title text-center my-4 display-1 text-white" style="font-size: 45px;">Sign In</h2>
+                    <form>
+                        <div class="mb-3">
+                            <label for="email" class="form-label text-white">Email</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                class="form-control" 
+                                ng-model="email" 
+                                placeholder="Enter your email" 
+                                required 
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label text-white">Password</label>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="form-control" 
+                                ng-model="password" 
+                                placeholder="Enter your password" 
+                                required 
+                            />
+                        </div>
+                        <button type="button" class="btn btn-dark w-100" ng-click="login()">Login</button>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label text-white">Password</label>
-                    <input type="password" id="password" class="form-control" ng-model="password" placeholder="Enter your password" required />
+
+                <!-- Sign Up Form -->
+                <div class="tab-pane fade" id="sign-up" role="tabpanel" aria-labelledby="sign-up-tab">
+                    <h2 class="card-title text-center my-4 display-6 text-white display-1" style="font-size: 45px;">Sign Up</h2>
+                    <form>
+                        <div class="mb-3">
+                            <label for="email-signup" class="form-label text-white">Email</label>
+                            <input 
+                                type="email" 
+                                id="email-signup" 
+                                class="form-control" 
+                                ng-model="email" 
+                                placeholder="Enter your email" 
+                                required 
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password-signup" class="form-label text-white">Password</label>
+                            <input 
+                                type="password" 
+                                id="password-signup" 
+                                class="form-control" 
+                                ng-model="password" 
+                                placeholder="Create a password" 
+                                required 
+                            />
+                        </div>
+                        <button type="button" class="btn btn-dark w-100" ng-click="signup()">Sign Up</button>
+                    </form>
                 </div>
-                <button type="button" class="btn btn-dark w-100" ng-click="login()">Login</button>
-            </form>
-            <div class="text-danger text-center mt-3" ng-if="errorMessage">{{ errorMessage }}</div>
+            </div>
+
+            <!-- Error message -->
+            <div class="text-danger text-center mt-3 error-message" ng-if="errorMessage">{{ errorMessage }}</div>
         </div>
     </div>
 </div>
