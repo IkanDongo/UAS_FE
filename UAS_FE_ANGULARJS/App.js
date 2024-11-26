@@ -1,5 +1,6 @@
+var app = angular.module('myApp', ['ngRoute'])
+    .constant("CSRF_TOKEN", document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
-var app = angular.module('myApp', ['ngRoute']);  
 
 app.service('AuthService', function() {
     var user = JSON.parse(localStorage.getItem('user')) || null;
@@ -75,22 +76,54 @@ app.config(function($routeProvider, $locationProvider) {
 });
 
 app.controller('AddProductController', function($scope, $http, $location, AuthService) {
-    $scope.email = '';
-    $scope.password = '';
+    // Inisialisasi properti produk
+    $scope.product = {
+        name: '',
+        price: null,
+        description: '',
+        stock: null,
+        image: ''
+    };
+    
+    // Pesan kesalahan untuk ditampilkan jika ada kegagalan
     $scope.errorMessage = '';
 
-    $scope.login = function() {
-        $http.post('http://localhost:8000/products', {
-            email: $scope.email,
-            password: $scope.password
-        }).then(function(response) {
+    // Fungsi untuk menambahkan produk
+    $scope.createProduct = function () {
+        // Validasi input sebelum mengirimkan data ke server
+        if (!$scope.product.name || !$scope.product.price || !$scope.product.stock) {
+            $scope.errorMessage = 'Name, Price, and Stock are required fields.';
+            return;
+        }
+        
+        // Kirim permintaan POST ke server
+        $http.post('http://localhost:8000/products', $scope.product, {
+              headers: {
+                'X-CSRF-TOKEN': CSRF_TOKEN 
+            }
+        }).then(function (response) {
+            console.log('Product added successfully:', response.data);
 
-        }, function(error) {
-            console.error('Login failed:', error);
-            $scope.errorMessage = error.data.message || 'Login failed, please try again.';
+            // Reset form setelah berhasil
+            $scope.product = {
+                name: '',
+                category: '',
+                description: '',
+                price: null,
+                stock: null,
+            };
+
+            $scope.errorMessage = ''; // Reset pesan kesalahan
+            $location.path('/products'); // Redirect ke halaman produk
+        }).catch(function (error) {
+            console.error('Failed to add product:', error);
+
+            // Tampilkan pesan kesalahan dari server atau gunakan pesan default
+            $scope.errorMessage = error.data?.message || 'Failed to add product. Please try again.';
         });
     };
 });
+
 app.controller('LoginController', function($scope, $http, $location, AuthService) {
     $scope.email = '';
     $scope.password = '';

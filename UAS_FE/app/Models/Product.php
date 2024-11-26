@@ -10,10 +10,8 @@ class Product extends Model
         'name',
         'description',
         'category',
-        'brand',
         'price',
         'stock',
-        'image_url',
     ];
 
     public function ratings()
