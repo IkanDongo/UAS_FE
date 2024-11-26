@@ -35,8 +35,8 @@ app.config(function($routeProvider, $locationProvider) {
             controller: 'HomeController'
         })
         .when('/admin/dashboard', {
-            templateUrl: 'MODEL/admin_dashboard.html',
-            controller: 'AdminDashboardController',
+            templateUrl: 'MODEL/dashboard.html',
+            controller: 'DashboardController',
             resolve: {
                 auth: function(AuthService, $location) {
                     if (!AuthService.isAdmin()) {
@@ -45,11 +45,52 @@ app.config(function($routeProvider, $locationProvider) {
                 }
             }
         })
+        .when('/add-admin', {
+            templateUrl: 'MODEL/add-admin.html', 
+            controller: 'AddAdminController'
+        })
+        .when('/remove-admin', {
+            templateUrl: 'MODEL/remove-admin.html', 
+            controller: 'RemoveAdminController'
+        })
+        .when('/remove-user', {
+            templateUrl: 'MODEL/remove-user.html', 
+            controller: 'RemoveUserController'
+        })
+        .when('/add-product', {
+            templateUrl: 'MODEL/addProduct.html', 
+            controller: 'AddProductController'
+        })
+        .when('/remove-product', {
+            templateUrl: 'MODEL/remove-product.html', 
+            controller: 'RemoveProductController'
+        })
+        .when('/edit-product', {
+            templateUrl: 'MODEL/edit-product.html',
+            controller: 'EditProductController'
+        })
         .otherwise({
             redirectTo: '/'
         });
 });
 
+app.controller('AddProductController', function($scope, $http, $location, AuthService) {
+    $scope.email = '';
+    $scope.password = '';
+    $scope.errorMessage = '';
+
+    $scope.login = function() {
+        $http.post('http://localhost:8000/products', {
+            email: $scope.email,
+            password: $scope.password
+        }).then(function(response) {
+
+        }, function(error) {
+            console.error('Login failed:', error);
+            $scope.errorMessage = error.data.message || 'Login failed, please try again.';
+        });
+    };
+});
 app.controller('LoginController', function($scope, $http, $location, AuthService) {
     $scope.email = '';
     $scope.password = '';

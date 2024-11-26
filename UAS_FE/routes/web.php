@@ -24,7 +24,7 @@ Route::delete('products/{productId}/rating/{ratingId}', [ProductController::clas
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'find']);
-Route::post('/products', [ProductController::class, 'create']);
+
 Route::put('/products/{id}', [ProductController::class, 'update']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
@@ -34,4 +34,5 @@ Route::middleware([IsAdmin::class])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     });
+    Route::post('/products', [ProductController::class, 'create']);
 });
